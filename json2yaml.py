@@ -12,8 +12,6 @@ text_file = open(c, "w")
 text_file.write(a)
 text_file.close
 
-cf = sys.argv[1] + ".yml"  # Create File
-
 replacements = {
     'ToPort': 'to_port',
     'FromPort': 'from_port',
@@ -23,7 +21,10 @@ replacements = {
     'UserIdGroupPairs:': '',
     'PrefixListIds: []': '',
     '- Description:': '        description:',
-    '  GroupName:': '    - name:'
+    '  GroupName:': '    - name:',
+    'IpProtocol:': '          - proto:',
+    '- Description:': '        description:',
+    'SecurityGroups:': '- name:'
 }
 
 
@@ -37,5 +38,6 @@ def replace(text):
 
 with open(c, 'rt') as fin:
     with open(c + ".out", 'wt') as fout:
+#    with open(c + ".out", 'wt') as fout:
         for line in fin:
             fout.write(replace(line))
