@@ -13,8 +13,8 @@ text_file.write(a)
 text_file.close
 
 replacements = {
-    'ToPort': 'to_port',
-    'FromPort': 'from_port',
+    '    ToPort:': '            to_port:',
+    '  - FromPort:': '            from_port:',
     'UserIdGroupPairs:': '',
     'Vpc:': '',
     'VpcPeeringConnectionId:': '',
@@ -24,7 +24,9 @@ replacements = {
     '  GroupName:': '    - name:',
     'IpProtocol:': '          - proto:',
     '- Description:': '        description:',
-    'SecurityGroups:': '- name:'
+    'SecurityGroups:': '- name:',
+    '  IpPermissions:': '        rules:',
+    '  IpPermissionsEgress:': '        rules_egress:'
 }
 
 
