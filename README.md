@@ -26,4 +26,6 @@ ansible-playbook -i /etc/ansible/local SG-XXXXXX.yml.out and your done!
 
 See this AWESOME video about how to leverage Ansible for AWS. It was an eye opener for me.
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/fxVqo7nomfA?list=PLaDgRSbFYikeJ4SwaE2QnjudjMZuJvq0g/0.jpg)](https://www.youtube.com/watch?v=fxVqo7nomfA?list=PLaDgRSbFYikeJ4SwaE2QnjudjMZuJvq0g)
+
 https://youtu.be/fxVqo7nomfA?list=PLaDgRSbFYikeJ4SwaE2QnjudjMZuJvq0g
