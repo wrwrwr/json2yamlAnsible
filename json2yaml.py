@@ -1,16 +1,10 @@
 #!/usr/local/bin/python
 
-import sys, json, yaml, re, fileinput, subprocess, os
-
-bad_words = ['', '']
+import re, sys, json, yaml
 
 with open(sys.argv[1]) as f:
 #   print yaml.safe_dump(json.load(f), default_flow_style=False)
    a = yaml.safe_dump(json.load(f), default_flow_style=False)
-
-#print a
-
-b = sys.argv[1]
 
 c = sys.argv[1] + ".yml"
 
@@ -18,29 +12,30 @@ text_file = open(c, "w")
 text_file.write(a)
 text_file.close
 
-command = ["sed", "-i", "'/VpcPeeringConnectionId/d;/PrefixListIds/d;/PeeringStatus/d;/UserIdGroupPairs/d'", b + ".yml" ]
-command2 = ["awk", "!/Vpc|IdGroup|VpcPeeringConnectionId|PrefixListIds|PeeringStatus/", c, ">", "temp", "&&", "mv", "temp", c ]
+cf = sys.argv[1] + ".yml"  # Create File
 
-#sed '/VpcPeeringConnectionId/d;/PrefixListIds/d;/PeeringStatus/d' sg-a54f3cde.json.yml      #to test output
-#sed -i '/VpcPeeringConnectionId/d;/PrefixListIds/d;/PeeringStatus/d' sys.argv[1].yml   #to make the file change
-#subprocess.Popen([ 'sed', '-i', '/VpcPeeringConnectionId/d;/PrefixListIds/d;/PeeringStatus/d', b + '.yml'])
+replacements = {
+    'ToPort': 'to_port',
+    'FromPort': 'from_port',
+    'UserIdGroupPairs:': '',
+    'Vpc:': '',
+    'VpcPeeringConnectionId:': '',
+    'UserIdGroupPairs:': '',
+    'PrefixListIds: []': '',
+    '- Description:': '        description:',
+    '  GroupName:': '    - name:'
+}
 
-output,error  = subprocess.Popen(
-                    command2, universal_newlines=True,
-                    stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+
+replacements = dict((re.escape(k), v) for k, v in replacements.iteritems())
+pattern = re.compile('|'.join(replacements.keys()))
 
 
-with open(c, "rt") as fin:
-    with open("out.txt", "wt") as fout:
+def replace(text):
+    return pattern.sub(lambda m: replacements[re.escape(m.group(0))], text)
+
+
+with open(c, 'rt') as fin:
+    with open(c + ".out", 'wt') as fout:
         for line in fin:
-            fout.write(line.replace('ToPort', 'to_port').replace('FromPort', 'from_port').replace('UserIdGroupPairs: []', ''))
-#        for line in fin:
-#            fout.write(line.replace('FromPort', 'from_port'))
-#            fout.write(line.replace('GroupId', 'group_id'))
-
-
-#with open("Stud.txt", "rt") as fin:
-#    with open("out.txt", "wt") as fout:
-#        for line in fin:
-#            fout.write(line.replace('A', 'Orange'))
-
+            fout.write(replace(line))
