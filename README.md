@@ -29,7 +29,3 @@ See this AWESOME video about how to leverage Ansible for AWS. It was an eye open
 https://www.youtube.com/watch?v=fxVqo7nomfA
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/fxVqo7nomfA/0.jpg)](https://www.youtube.com/watch?v=fxVqo7nomfA) 
-
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/fxVqo7nomfA?list=PLaDgRSbFYikeJ4SwaE2QnjudjMZuJvq0g/0.jpg)](https://www.youtube.com/watch?v=fxVqo7nomfA?list=PLaDgRSbFYikeJ4SwaE2QnjudjMZuJvq0g)
-
-https://youtu.be/fxVqo7nomfA?list=PLaDgRSbFYikeJ4SwaE2QnjudjMZuJvq0g
