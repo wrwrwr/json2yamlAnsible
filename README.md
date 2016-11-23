@@ -1,6 +1,7 @@
 # json2yamlAnsible
 Project for taking the output of JSON from AWS and converting it into useful Ansible Playbooks http://docs.ansible.com/ansible/ec2_group_module.html 
 
+Current Status: Need to sort the outputs so the yaml file flows appropriately
 
 The Problem:
 
