@@ -1,16 +1,11 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 
-import re, sys, json, yaml
+import json
+import os
+import re
+import sys
 
-with open(sys.argv[1]) as f:
-#   print yaml.safe_dump(json.load(f), default_flow_style=False)
-   a = yaml.safe_dump(json.load(f), default_flow_style=False)
-
-c = sys.argv[1] + ".yml"
-
-text_file = open(c, "w")
-text_file.write(a)
-text_file.close
+import yaml
 
 replacements = {
     '    ToPort:': '            to_port:',
@@ -22,24 +17,32 @@ replacements = {
     'PrefixListIds: []': '',
     '- Description:': '        description:',
     '  GroupName:': '    - name:',
-    'IpProtocol:': '          - proto:',
+    '  -     IpProtocol:': '          - proto:',
     '- Description:': '        description:',
     'SecurityGroups:': '- name:',
     '  IpPermissions:': '        rules:',
-    '  IpPermissionsEgress:': '        rules_egress:'
+    '  IpPermissionsEgress:': '        rules_egress:',
+    '  GroupId:': '',
+    '    - GroupId:': '            group_id:',
+
+    '~~~NO_SUCH_KEY~~~': None  # Empty remove pattern would match every line.
 }
-
-
 replacements = dict((re.escape(k), v) for k, v in replacements.iteritems())
-pattern = re.compile('|'.join(replacements.keys()))
+remove_pattern = re.compile('|'.join(
+        k for k, v in replacements.iteritems() if v is None))
+replace_pattern = re.compile('|'.join(
+        k for k, v in replacements.iteritems() if v is not None))
 
 
-def replace(text):
-    return pattern.sub(lambda m: replacements[re.escape(m.group(0))], text)
+def rewrite(line):
+    if remove_pattern.search(line):
+        return ''
+    return replace_pattern.sub(
+                lambda m: replacements[re.escape(m.group())], line)
 
-
-with open(c, 'rt') as fin:
-    with open(c + ".out", 'wt') as fout:
-#    with open(c + ".out", 'wt') as fout:
-        for line in fin:
-            fout.write(replace(line))
+filename = sys.argv[1]
+with open(filename) as fin:
+    text = yaml.safe_dump(json.load(fin), default_flow_style=False)
+with open(os.path.splitext(filename)[0] + '.yml', 'w') as fout:
+    for line in text.splitlines():
+        fout.write(rewrite(line) + os.linesep)
